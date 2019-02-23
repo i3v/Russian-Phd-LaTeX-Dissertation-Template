@@ -9,31 +9,35 @@ all: synopsis dissertation
 preformat: synopsis-preformat dissertation-preformat
 
 ifneq ($(SystemDrive),)
+# OS is Windows, assuming original "Times New Roman" is availible
     FONT_FAMILY?=1
+    QQQQ=
 else
+# Not Windows, using "LiberationSerif" instead
     FONT_FAMILY?=2
+    QQQQ='
 endif
 
 TEXFLAGS?=-halt-on-error -file-line-error
 
+DRAFTCODE?=$(QQQQ)\newcounter{draft}\setcounter{draft}{1}$(QQQQ)
+FONTCODE?=$(QQQQ)\newcounter{fontfamily}\setcounter{fontfamily}{$(FONT_FAMILY)}\input{%S}$(QQQQ)
+
+
+
 dissertation:
-	#	$(MAKE) -C Dissertation
-	latexmk -pdf -pdflatex="xelatex $(TEXFLAGS) %O '\newcounter{fontfamily}\setcounter{fontfamily}\
-{$(FONT_FAMILY)}\input{%S}'" dissertation
+#	$(MAKE) -C Dissertation
+	latexmk -pdf -pdflatex="xelatex $(TEXFLAGS) %O $(FONTCODE)" dissertation
 
 pdflatex:
 	latexmk -pdf -pdflatex="pdflatex $(TEXFLAGS) %O %S" dissertation
 
 synopsis:
-	#	$(MAKE) -C Synopsis
-	latexmk -pdf -pdflatex="xelatex $(TEXFLAGS) %O '\newcounter{fontfamily}\setcounter{fontfamily}\
-{$(FONT_FAMILY)}\input{%S}'" synopsis
+	latexmk -pdf -pdflatex="xelatex $(TEXFLAGS) %O $(FONTCODE)" synopsis
 
-draft:
-	latexmk -pdf -pdflatex="xelatex $(TEXFLAGS) %O '\newcounter{fontfamily}\setcounter{fontfamily}\
-{$(FONT_FAMILY)}\newcounter{draft}\setcounter{draft}{1}\input{%S}'" dissertation
-	latexmk -pdf -pdflatex="xelatex $(TEXFLAGS) %O '\newcounter{fontfamily}\setcounter{fontfamily}\
-{$(FONT_FAMILY)}\newcounter{draft}\setcounter{draft}{1}\input{%S}'" synopsis
+draft:	
+	latexmk -pdf -pdflatex="xelatex $(TEXFLAGS) %O $(DRAFTCODE) $(FONTCODE)" dissertation
+	latexmk -pdf -pdflatex="xelatex $(TEXFLAGS) %O $(DRAFTCODE) $(FONTCODE)" synopsis
 
 talk:
 	$(MAKE) talk -C Presentation
@@ -50,7 +54,7 @@ synopsis-preformat:
 	latexmk -pdf -jobname=synopsis -silent --shell-escape synopsis.tex
 
 pdflatex-examples:
-	#
+#
 	$(eval RCFILE = nodraft_cm_bibtex_latexmkrc)
 	$(eval DESCR = pdflatex_bibtex)
 	latexmk -pdf -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -59,7 +63,7 @@ pdflatex-examples:
 	rm -f dissertation_$(DESCR).bbl
 	latexmk -pdf -jobname="synopsis_$(DESCR)" -c synopsis
 	rm -f synopsis_$(DESCR).bbl
-	#
+#
 	$(eval RCFILE = draft_cm_bibtex_latexmkrc)
 	$(eval DESCR = pdflatex_bibtex_draft)
 	latexmk -pdf -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -68,7 +72,7 @@ pdflatex-examples:
 	rm -f dissertation_$(DESCR).bbl
 	latexmk -pdf -jobname="synopsis_$(DESCR)" -c synopsis
 	rm -f synopsis_$(DESCR).bbl
-	#
+#
 	$(eval RCFILE = nodraft_cm_latexmkrc)
 	$(eval DESCR = pdflatex)
 	latexmk -pdf -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -79,7 +83,7 @@ pdflatex-examples:
 	rm -f synopsis_$(DESCR).bbl
 	rm -f dissertation_$(DESCR).run.xml
 	rm -f synopsis_$(DESCR).run.xml
-	#
+#
 	$(eval RCFILE = draft_cm_latexmkrc)
 	$(eval DESCR = pdflatex_draft)
 	latexmk -pdf -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -92,7 +96,7 @@ pdflatex-examples:
 	rm -f synopsis_$(DESCR).run.xml
 
 pscyr-examples:
-	#
+#
 	$(eval RCFILE = nodraft_msfonts_bibtex_latexmkrc)
 	$(eval DESCR = pdflatex_pscyr_bibtex)
 	latexmk -pdf -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -101,7 +105,7 @@ pscyr-examples:
 	rm -f dissertation_$(DESCR).bbl
 	latexmk -pdf -jobname="synopsis_$(DESCR)" -c synopsis
 	rm -f synopsis_$(DESCR).bbl
-	#
+#
 	$(eval RCFILE = draft_msfonts_bibtex_latexmkrc)
 	$(eval DESCR = pdflatex_pscyr_bibtex_draft)
 	latexmk -pdf -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -110,7 +114,7 @@ pscyr-examples:
 	rm -f dissertation_$(DESCR).bbl
 	latexmk -pdf -jobname="synopsis_$(DESCR)" -c synopsis
 	rm -f synopsis_$(DESCR).bbl
-	#
+#
 	$(eval RCFILE = nodraft_msfonts_latexmkrc)
 	$(eval DESCR = pdflatex_pscyr)
 	latexmk -pdf -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -121,7 +125,7 @@ pscyr-examples:
 	rm -f synopsis_$(DESCR).bbl
 	rm -f dissertation_$(DESCR).run.xml
 	rm -f synopsis_$(DESCR).run.xml
-	#
+#
 	$(eval RCFILE = draft_msfonts_latexmkrc)
 	$(eval DESCR = pdflatex_pscyr_draft)
 	latexmk -pdf -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -134,7 +138,7 @@ pscyr-examples:
 	rm -f synopsis_$(DESCR).run.xml
 
 xcharter-examples:
-	#
+#
 	$(eval RCFILE = nodraft_altfont2_bibtex_latexmkrc)
 	$(eval DESCR = pdflatex_xcharter_bibtex)
 	latexmk -pdf -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -143,7 +147,7 @@ xcharter-examples:
 	rm -f dissertation_$(DESCR).bbl
 	latexmk -pdf -jobname="synopsis_$(DESCR)" -c synopsis
 	rm -f synopsis_$(DESCR).bbl
-	#
+#
 	$(eval RCFILE = draft_altfont2_bibtex_latexmkrc)
 	$(eval DESCR = pdflatex_xcharter_bibtex_draft)
 	latexmk -pdf -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -152,7 +156,7 @@ xcharter-examples:
 	rm -f dissertation_$(DESCR).bbl
 	latexmk -pdf -jobname="synopsis_$(DESCR)" -c synopsis
 	rm -f synopsis_$(DESCR).bbl
-	#
+#
 	$(eval RCFILE = nodraft_altfont2_latexmkrc)
 	$(eval DESCR = pdflatex_xcharter)
 	latexmk -pdf -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -163,7 +167,7 @@ xcharter-examples:
 	rm -f synopsis_$(DESCR).bbl
 	rm -f dissertation_$(DESCR).run.xml
 	rm -f synopsis_$(DESCR).run.xml
-	#
+#
 	$(eval RCFILE = draft_altfont2_latexmkrc)
 	$(eval DESCR = pdflatex_xcharter_draft)
 	latexmk -pdf -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -176,7 +180,7 @@ xcharter-examples:
 	rm -f synopsis_$(DESCR).run.xml
 
 xelatex-examples:
-	#
+#
 	$(eval RCFILE = nodraft_cm_bibtex_latexmkrc)
 	$(eval DESCR = xelatex_bibtex)
 	latexmk -xelatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -187,7 +191,7 @@ xelatex-examples:
 	latexmk -xelatex -jobname="synopsis_$(DESCR)" -c synopsis
 	rm -f synopsis_$(DESCR).bbl
 	rm -f synopsis_$(DESCR).xdv
-	#
+#
 	$(eval RCFILE = draft_cm_bibtex_latexmkrc)
 	$(eval DESCR = xelatex_bibtex_draft)
 	latexmk -xelatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -198,7 +202,7 @@ xelatex-examples:
 	latexmk -xelatex -jobname="synopsis_$(DESCR)" -c synopsis
 	rm -f synopsis_$(DESCR).bbl
 	rm -f synopsis_$(DESCR).xdv
-	#
+#
 	$(eval RCFILE = nodraft_cm_latexmkrc)
 	$(eval DESCR = xelatex)
 	latexmk -xelatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -211,7 +215,7 @@ xelatex-examples:
 	rm -f synopsis_$(DESCR).xdv
 	rm -f dissertation_$(DESCR).run.xml
 	rm -f synopsis_$(DESCR).run.xml
-	#
+#
 	$(eval RCFILE = draft_cm_latexmkrc)
 	$(eval DESCR = xelatex_draft)
 	latexmk -xelatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -226,7 +230,7 @@ xelatex-examples:
 	rm -f synopsis_$(DESCR).run.xml
 
 xelatex-msfonts-examples:
-	#
+#
 	$(eval RCFILE = nodraft_msfonts_bibtex_latexmkrc)
 	$(eval DESCR = xelatex_msfonts_bibtex)
 	latexmk -xelatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -237,7 +241,7 @@ xelatex-msfonts-examples:
 	latexmk -xelatex -jobname="synopsis_$(DESCR)" -c synopsis
 	rm -f synopsis_$(DESCR).bbl
 	rm -f synopsis_$(DESCR).xdv
-	#
+#
 	$(eval RCFILE = draft_msfonts_bibtex_latexmkrc)
 	$(eval DESCR = xelatex_msfonts_bibtex_draft)
 	latexmk -xelatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -248,7 +252,7 @@ xelatex-msfonts-examples:
 	latexmk -xelatex -jobname="synopsis_$(DESCR)" -c synopsis
 	rm -f synopsis_$(DESCR).bbl
 	rm -f synopsis_$(DESCR).xdv
-	#
+#
 	$(eval RCFILE = nodraft_msfonts_latexmkrc)
 	$(eval DESCR = xelatex_msfonts)
 	latexmk -xelatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -261,7 +265,7 @@ xelatex-msfonts-examples:
 	rm -f synopsis_$(DESCR).xdv
 	rm -f dissertation_$(DESCR).run.xml
 	rm -f synopsis_$(DESCR).run.xml
-	#
+#
 	$(eval RCFILE = draft_msfonts_latexmkrc)
 	$(eval DESCR = xelatex_msfonts_draft)
 	latexmk -xelatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -276,7 +280,7 @@ xelatex-msfonts-examples:
 	rm -f synopsis_$(DESCR).run.xml
 
 xelatex-liberation-examples:
-	#
+#
 	$(eval RCFILE = nodraft_altfont2_bibtex_latexmkrc)
 	$(eval DESCR = xelatex_liberation_bibtex)
 	latexmk -xelatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -287,7 +291,7 @@ xelatex-liberation-examples:
 	latexmk -xelatex -jobname="synopsis_$(DESCR)" -c synopsis
 	rm -f synopsis_$(DESCR).bbl
 	rm -f synopsis_$(DESCR).xdv
-	#
+#
 	$(eval RCFILE = draft_altfont2_bibtex_latexmkrc)
 	$(eval DESCR = xelatex_liberation_bibtex_draft)
 	latexmk -xelatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -298,7 +302,7 @@ xelatex-liberation-examples:
 	latexmk -xelatex -jobname="synopsis_$(DESCR)" -c synopsis
 	rm -f synopsis_$(DESCR).bbl
 	rm -f synopsis_$(DESCR).xdv
-	#
+#
 	$(eval RCFILE = nodraft_altfont2_latexmkrc)
 	$(eval DESCR = xelatex_liberation)
 	latexmk -xelatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -311,7 +315,7 @@ xelatex-liberation-examples:
 	rm -f synopsis_$(DESCR).xdv
 	rm -f dissertation_$(DESCR).run.xml
 	rm -f synopsis_$(DESCR).run.xml
-	#
+#
 	$(eval RCFILE = draft_altfont2_latexmkrc)
 	$(eval DESCR = xelatex_liberation_draft)
 	latexmk -xelatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -326,7 +330,7 @@ xelatex-liberation-examples:
 	rm -f synopsis_$(DESCR).run.xml
 
 lualatex-examples:
-	#
+#
 	$(eval RCFILE = nodraft_cm_bibtex_latexmkrc)
 	$(eval DESCR = lualatex_bibtex)
 	latexmk -lualatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -335,7 +339,7 @@ lualatex-examples:
 	rm -f dissertation_$(DESCR).bbl
 	latexmk -lualatex -jobname="synopsis_$(DESCR)" -c synopsis
 	rm -f synopsis_$(DESCR).bbl
-	#
+#
 	$(eval RCFILE = draft_cm_bibtex_latexmkrc)
 	$(eval DESCR = lualatex_bibtex_draft)
 	latexmk -lualatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -344,7 +348,7 @@ lualatex-examples:
 	rm -f dissertation_$(DESCR).bbl
 	latexmk -lualatex -jobname="synopsis_$(DESCR)" -c synopsis
 	rm -f synopsis_$(DESCR).bbl
-	#
+#
 	$(eval RCFILE = nodraft_cm_latexmkrc)
 	$(eval DESCR = lualatex)
 	latexmk -lualatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -355,7 +359,7 @@ lualatex-examples:
 	rm -f synopsis_$(DESCR).bbl
 	rm -f dissertation_$(DESCR).run.xml
 	rm -f synopsis_$(DESCR).run.xml
-	#
+#
 	$(eval RCFILE = draft_cm_latexmkrc)
 	$(eval DESCR = lualatex_draft)
 	latexmk -lualatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -368,7 +372,7 @@ lualatex-examples:
 	rm -f synopsis_$(DESCR).run.xml
 
 lualatex-msfonts-examples:
-	#
+#
 	$(eval RCFILE = nodraft_msfonts_bibtex_latexmkrc)
 	$(eval DESCR = lualatex_msfonts_bibtex)
 	latexmk -lualatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -377,7 +381,7 @@ lualatex-msfonts-examples:
 	rm -f dissertation_$(DESCR).bbl
 	latexmk -lualatex -jobname="synopsis_$(DESCR)" -c synopsis
 	rm -f synopsis_$(DESCR).bbl
-	#
+#
 	$(eval RCFILE = draft_msfonts_bibtex_latexmkrc)
 	$(eval DESCR = lualatex_msfonts_bibtex_draft)
 	latexmk -lualatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -386,7 +390,7 @@ lualatex-msfonts-examples:
 	rm -f dissertation_$(DESCR).bbl
 	latexmk -lualatex -jobname="synopsis_$(DESCR)" -c synopsis
 	rm -f synopsis_$(DESCR).bbl
-	#
+#
 	$(eval RCFILE = nodraft_msfonts_latexmkrc)
 	$(eval DESCR = lualatex_msfonts)
 	latexmk -lualatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -397,7 +401,7 @@ lualatex-msfonts-examples:
 	rm -f synopsis_$(DESCR).bbl
 	rm -f dissertation_$(DESCR).run.xml
 	rm -f synopsis_$(DESCR).run.xml
-	#
+#
 	$(eval RCFILE = draft_msfonts_latexmkrc)
 	$(eval DESCR = lualatex_msfonts_draft)
 	latexmk -lualatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -410,7 +414,7 @@ lualatex-msfonts-examples:
 	rm -f synopsis_$(DESCR).run.xml
 
 lualatex-liberation-examples:
-	#
+#
 	$(eval RCFILE = nodraft_altfont2_bibtex_latexmkrc)
 	$(eval DESCR = lualatex_liberation_bibtex)
 	latexmk -lualatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -419,7 +423,7 @@ lualatex-liberation-examples:
 	rm -f dissertation_$(DESCR).bbl
 	latexmk -lualatex -jobname="synopsis_$(DESCR)" -c synopsis
 	rm -f synopsis_$(DESCR).bbl
-	#
+#
 	$(eval RCFILE = draft_altfont2_bibtex_latexmkrc)
 	$(eval DESCR = lualatex_liberation_bibtex_draft)
 	latexmk -lualatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -428,7 +432,7 @@ lualatex-liberation-examples:
 	rm -f dissertation_$(DESCR).bbl
 	latexmk -lualatex -jobname="synopsis_$(DESCR)" -c synopsis
 	rm -f synopsis_$(DESCR).bbl
-	#
+#
 	$(eval RCFILE = nodraft_altfont2_latexmkrc)
 	$(eval DESCR = lualatex_liberation)
 	latexmk -lualatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -439,7 +443,7 @@ lualatex-liberation-examples:
 	rm -f synopsis_$(DESCR).bbl
 	rm -f dissertation_$(DESCR).run.xml
 	rm -f synopsis_$(DESCR).run.xml
-	#
+#
 	$(eval RCFILE = draft_altfont2_latexmkrc)
 	$(eval DESCR = lualatex_liberation_draft)
 	latexmk -lualatex -jobname="dissertation_$(DESCR)" -r $(RCFILE) -silent -shell-escape dissertation
@@ -486,10 +490,10 @@ indent:
 	latexindent -l=$(INDENT_SETTINGS) -s -w $(file);)
 
 clean:
-	#	$(MAKE) clean -C Dissertation
+#	$(MAKE) clean -C Dissertation
 	latexmk -C dissertation
 	rm -f dissertation.bbl
-	#	$(MAKE) clean -C Synopsis
+#	$(MAKE) clean -C Synopsis
 	latexmk -C synopsis
 	rm -f synopsis.bbl
 	$(MAKE) clean -C Presentation
@@ -498,7 +502,7 @@ distclean:
 	$(MAKE) distclean -C Dissertation
 	$(MAKE) distclean -C Synopsis
 	$(MAKE) distclean -C Presentation
-	## Core latex/pdflatex auxiliary files:
+## Core latex/pdflatex auxiliary files:
 	rm -f *.aux
 	rm -f *.lof
 	rm -f *.log
@@ -507,15 +511,15 @@ distclean:
 	rm -f *.out
 	rm -f *.toc
 
-	## Intermediate documents:
+## Intermediate documents:
 	rm -f *.dvi
 	rm -f *-converted-to.*
-	# these rules might exclude image files for figures etc.
-	# *.ps
-	# *.eps
-	# *.pdf
+# these rules might exclude image files for figures etc.
+# *.ps
+# *.eps
+# *.pdf
 
-	## Bibliography auxiliary files (bibtex/biblatex/biber):
+## Bibliography auxiliary files (bibtex/biblatex/biber):
 	rm -f *.bbl
 	rm -f *.bcf
 	rm -f *.blg
@@ -524,31 +528,31 @@ distclean:
 	rm -f *.brf
 	rm -f *.run.xml
 
-	## Build tool auxiliary files:
+## Build tool auxiliary files:
 	rm -f *.fdb_latexmk
 	rm -f *.synctex
 	rm -f *.synctex.gz
 	rm -f *.synctex.gz\(busy\)
 	rm -f *.pdfsync
 
-	## Auxiliary and intermediate files from other packages:
+## Auxiliary and intermediate files from other packages:
 
-	# algorithms
+# algorithms
 	rm -f *.alg
 	rm -f *.loa
 
-	# achemso
+# achemso
 	rm -f acs-*.bib
 
-	# amsthm
+# amsthm
 	rm -f *.thm
 
-	# beamer
+# beamer
 	rm -f *.nav
 	rm -f *.snm
 	rm -f *.vrb
 
-	#(e)ledmac/(e)ledpar
+#(e)ledmac/(e)ledpar
 	rm -f *.end
 	rm -f *.[1-9]
 	rm -f *.[1-9][0-9]
@@ -563,89 +567,89 @@ distclean:
 	rm -f *.eledsec[1-9][0-9][0-9]
 	rm -f *.eledsec[1-9][0-9][0-9]R
 
-	# glossaries
+# glossaries
 	rm -f *.acn
 	rm -f *.acr
 	rm -f *.glg
 	rm -f *.glo
 	rm -f *.gls
 
-	# gnuplottex
+# gnuplottex
 	rm -f *-gnuplottex-*
 
-	# hyperref
+# hyperref
 	rm -f *.brf
 
-	# knitr
+# knitr
 	rm -f *-concordance.tex
 	rm -f *.tikz
 	rm -f *-tikzDictionary
 
-	# listings
+# listings
 	rm -f *.lol
 
-	# makeidx
+# makeidx
 	rm -f *.idx
 	rm -f *.ilg
 	rm -f *.ind
 	rm -f *.ist
 
-	# minitoc
+# minitoc
 	rm -f *.maf
 	rm -f *.mtc
 	rm -f *.mtc[0-9]
 	rm -f *.mtc[1-9][0-9]
 
-	# minted
+# minted
 	rm -f _minted*
 	rm -f *.pyg
 
-	# morewrites
+# morewrites
 	rm -f *.mw
 
-	# mylatexformat
+# mylatexformat
 	rm -f *.fmt
 
-	# nomencl
+# nomencl
 	rm -f *.nlo
 
-	# sagetex
+# sagetex
 	rm -f *.sagetex.sage
 	rm -f *.sagetex.py
 	rm -f *.sagetex.scmd
 
-	# sympy
+# sympy
 	rm -f *.sout
 	rm -f *.sympy
 	rm -f sympy-plots-for-*.tex/
 
-	# pdfcomment
+# pdfcomment
 	rm -f *.upa
 	rm -f *.upb
 
-	#pythontex
+#pythontex
 	rm -f *.pytxcode
 	rm -f pythontex-files-*/
 
-	# Texpad
+# Texpad
 	rm -f .texpadtmp
 
-	# TikZ & PGF
+# TikZ & PGF
 	rm -f *.dpth
 	rm -f *.md5
 	rm -f *.auxlock
 
-	# todonotes
+# todonotes
 	rm -f *.tdo
 
-	# xindy
+# xindy
 	rm -f *.xdy
 
-	# WinEdt
+# WinEdt
 	rm -f *.bak
 	rm -f *.sav
 
-	# endfloat
+# endfloat
 	rm -f *.ttt
 	rm -f *.fff
 	rm -f *.aux
@@ -680,7 +684,7 @@ distclean:
 	rm -f *.bcf
 	rm -f *.run.xml
 
-	# latexindent backup
+# latexindent backup
 	rm -f *.bak[0-9]
 
 release: all
