@@ -44,7 +44,15 @@ draft:
 	latexmk -pdf -pdflatex="xelatex $(TEXFLAGS) $(PERCENT)O $(DRAFTCODE) $(FONTCODE)" synopsis
 
 talk:
-	$(MAKE) talk -C Presentation
+# This results in all temporary files (and pdf) being put to the "Presentation" folder:
+#	latexmk -pdf -pdflatex="xelatex $(TEXFLAGS) $(PERCENT)O $(PERCENT)P" -cd Presentation/presentation
+#
+# This requires file paths (e.g. in \include{}) inside presentation.tex to be relative to Makefile folder:
+#	latexmk -pdf -pdflatex="xelatex $(TEXFLAGS) $(PERCENT)O $(PERCENT)P" -cd- presentation
+#
+# Same, but uses proxy "presentation.tex" in Makefile folder (required for TexStudio to understand paths correctly):
+	latexmk -pdf -pdflatex="xelatex $(TEXFLAGS) $(PERCENT)O $(PERCENT)P" presentation
+
 
 dissertation-preformat:
 	etex -ini "&latex" mylatexformat.ltx """dissertation.tex"""
@@ -498,7 +506,7 @@ clean:
 	$(RMF) dissertation.bbl
 	latexmk -C synopsis
 	$(RMF) synopsis.bbl
-	$(MAKE) clean -C Presentation
+	latexmk -C presentation
 
 distclean:
 ## Core latex/pdflatex auxiliary files:
