@@ -1,3 +1,15 @@
+
+ifneq ($(SystemDrive),)
+# OS is Windows, assuming original "Times New Roman" is availible
+	SHELL=cmd    
+    QQQQ=	
+	RMF=del /Q
+else
+# Not Windows, using "LiberationSerif" instead    
+    QQQQ='
+	RMF=rm -f 
+endif
+
 all:	talk
 
 talk:	pdf
@@ -11,192 +23,192 @@ pdf:
 
 clean:
 	latexmk -C presentation
-	rm -f synopsis.bbl
+	$(RMF) synopsis.bbl
 
 distclean:
 ## Core latex/pdflatex auxiliary files:
-	rm -f *.aux
-	rm -f *.lof
-	rm -f *.log
-	rm -f *.lot
-	rm -f *.fls
-	rm -f *.out
-	rm -f *.toc
+	$(RMF) *.aux
+	$(RMF) *.lof
+	$(RMF) *.log
+	$(RMF) *.lot
+	$(RMF) *.fls
+	$(RMF) *.out
+	$(RMF) *.toc
 
 ## Intermediate documents:
-	rm -f *.dvi
-	rm -f *-converted-to.*
+	$(RMF) *.dvi
+	$(RMF) *-converted-to.*
 # these rules might exclude image files for figures etc.
 # *.ps
 # *.eps
 # *.pdf
 
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
-	rm -f *.bbl
-	rm -f *.bcf
-	rm -f *.blg
+	$(RMF) *.bbl
+	$(RMF) *.bcf
+	$(RMF) *.blg
 
 
-	rm -f *-blx.aux
-	rm -f *-blx.bib
-	rm -f *.brf
-	rm -f *.run.xml
+	$(RMF) *-blx.aux
+	$(RMF) *-blx.bib
+	$(RMF) *.brf
+	$(RMF) *.run.xml
 
 ## Build tool auxiliary files:
-	rm -f *.fdb_latexmk
-	rm -f *.synctex
-	rm -f *.synctex.gz
-	rm -f *.synctex.gz\(busy\)
-	rm -f *.pdfsync
+	$(RMF) *.fdb_latexmk
+	$(RMF) *.synctex
+	$(RMF) *.synctex.gz
+	$(RMF) *.synctex.gz\(busy\)
+	$(RMF) *.pdfsync
 
 ## Auxiliary and intermediate files from other packages:
 
 # algorithms
-	rm -f *.alg
-	rm -f *.loa
+	$(RMF) *.alg
+	$(RMF) *.loa
 
 # achemso
-	rm -f acs-*.bib
+	$(RMF) acs-*.bib
 
 # amsthm
-	rm -f *.thm
+	$(RMF) *.thm
 
 # beamer
-	rm -f *.nav
-	rm -f *.snm
-	rm -f *.vrb
+	$(RMF) *.nav
+	$(RMF) *.snm
+	$(RMF) *.vrb
 
 #(e)ledmac/(e)ledpar
-	rm -f *.end
-	rm -f *.[1-9]
-	rm -f *.[1-9][0-9]
-	rm -f *.[1-9][0-9][0-9]
-	rm -f *.[1-9]R
-	rm -f *.[1-9][0-9]R
-	rm -f *.[1-9][0-9][0-9]R
-	rm -f *.eledsec[1-9]
-	rm -f *.eledsec[1-9]R
-	rm -f *.eledsec[1-9][0-9]
-	rm -f *.eledsec[1-9][0-9]R
-	rm -f *.eledsec[1-9][0-9][0-9]
-	rm -f *.eledsec[1-9][0-9][0-9]R
+	$(RMF) *.end
+	$(RMF) *.[1-9]
+	$(RMF) *.[1-9][0-9]
+	$(RMF) *.[1-9][0-9][0-9]
+	$(RMF) *.[1-9]R
+	$(RMF) *.[1-9][0-9]R
+	$(RMF) *.[1-9][0-9][0-9]R
+	$(RMF) *.eledsec[1-9]
+	$(RMF) *.eledsec[1-9]R
+	$(RMF) *.eledsec[1-9][0-9]
+	$(RMF) *.eledsec[1-9][0-9]R
+	$(RMF) *.eledsec[1-9][0-9][0-9]
+	$(RMF) *.eledsec[1-9][0-9][0-9]R
 
 # glossaries
-	rm -f *.acn
-	rm -f *.acr
-	rm -f *.glg
-	rm -f *.glo
-	rm -f *.gls
+	$(RMF) *.acn
+	$(RMF) *.acr
+	$(RMF) *.glg
+	$(RMF) *.glo
+	$(RMF) *.gls
 
 # gnuplottex
-	rm -f *-gnuplottex-*
+	$(RMF) *-gnuplottex-*
 
 # hyperref
-	rm -f *.brf
+	$(RMF) *.brf
 
 # knitr
-	rm -f *-concordance.tex
-	rm -f *.tikz
-	rm -f *-tikzDictionary
+	$(RMF) *-concordance.tex
+	$(RMF) *.tikz
+	$(RMF) *-tikzDictionary
 
 # listings
-	rm -f *.lol
+	$(RMF) *.lol
 
 # makeidx
-	rm -f *.idx
-	rm -f *.ilg
-	rm -f *.ind
-	rm -f *.ist
+	$(RMF) *.idx
+	$(RMF) *.ilg
+	$(RMF) *.ind
+	$(RMF) *.ist
 
 # minitoc
-	rm -f *.maf
-	rm -f *.mtc
-	rm -f *.mtc[0-9]
-	rm -f *.mtc[1-9][0-9]
+	$(RMF) *.maf
+	$(RMF) *.mtc
+	$(RMF) *.mtc[0-9]
+	$(RMF) *.mtc[1-9][0-9]
 
 # minted
-	rm -f _minted*
-	rm -f *.pyg
+	$(RMF) _minted*
+	$(RMF) *.pyg
 
 # morewrites
-	rm -f *.mw
+	$(RMF) *.mw
 
 # mylatexformat
-	rm -f *.fmt
+	$(RMF) *.fmt
 
 # nomencl
-	rm -f *.nlo
+	$(RMF) *.nlo
 
 # sagetex
-	rm -f *.sagetex.sage
-	rm -f *.sagetex.py
-	rm -f *.sagetex.scmd
+	$(RMF) *.sagetex.sage
+	$(RMF) *.sagetex.py
+	$(RMF) *.sagetex.scmd
 
 # sympy
-	rm -f *.sout
-	rm -f *.sympy
-	rm -f sympy-plots-for-*.tex/
+	$(RMF) *.sout
+	$(RMF) *.sympy
+	$(RMF) sympy-plots-for-*.tex/
 
 # pdfcomment
-	rm -f *.upa
-	rm -f *.upb
+	$(RMF) *.upa
+	$(RMF) *.upb
 
 #pythontex
-	rm -f *.pytxcode
-	rm -f pythontex-files-*/
+	$(RMF) *.pytxcode
+	$(RMF) pythontex-files-*/
 
 # Texpad
-	rm -f .texpadtmp
+	$(RMF) .texpadtmp
 
 # TikZ & PGF
-	rm -f *.dpth
-	rm -f *.md5
-	rm -f *.auxlock
+	$(RMF) *.dpth
+	$(RMF) *.md5
+	$(RMF) *.auxlock
 
 # todonotes
-	rm -f *.tdo
+	$(RMF) *.tdo
 
 # xindy
-	rm -f *.xdy
+	$(RMF) *.xdy
 
 # WinEdt
-	rm -f *.bak
-	rm -f *.sav
+	$(RMF) *.bak
+	$(RMF) *.sav
 
 # endfloat
-	rm -f *.ttt
-	rm -f *.fff
-	rm -f *.aux
-	rm -f *.bbl
-	rm -f *.blg
-	rm -f *.dvi
-	rm -f *.fdb_latexmk
-	rm -f *.fls
-	rm -f *.glg
-	rm -f *.glo
-	rm -f *.gls
-	rm -f *.idx
-	rm -f *.ilg
-	rm -f *.ind
-	rm -f *.ist
-	rm -f *.lof
-	rm -f *.log
-	rm -f *.lot
-	rm -f *.nav
-	rm -f *.nlo
-	rm -f *.out
-	rm -f *.pdfsync
-	rm -f *.ps
-	rm -f *.snm
-	rm -f *.synctex.gz
-	rm -f *.toc
-	rm -f *.vrb
-	rm -f *.maf
-	rm -f *.mtc
-	rm -f *.mtc0
-	rm -f *.bak
-	rm -f *.bcf
-	rm -f *.run.xml
+	$(RMF) *.ttt
+	$(RMF) *.fff
+	$(RMF) *.aux
+	$(RMF) *.bbl
+	$(RMF) *.blg
+	$(RMF) *.dvi
+	$(RMF) *.fdb_latexmk
+	$(RMF) *.fls
+	$(RMF) *.glg
+	$(RMF) *.glo
+	$(RMF) *.gls
+	$(RMF) *.idx
+	$(RMF) *.ilg
+	$(RMF) *.ind
+	$(RMF) *.ist
+	$(RMF) *.lof
+	$(RMF) *.log
+	$(RMF) *.lot
+	$(RMF) *.nav
+	$(RMF) *.nlo
+	$(RMF) *.out
+	$(RMF) *.pdfsync
+	$(RMF) *.ps
+	$(RMF) *.snm
+	$(RMF) *.synctex.gz
+	$(RMF) *.toc
+	$(RMF) *.vrb
+	$(RMF) *.maf
+	$(RMF) *.mtc
+	$(RMF) *.mtc0
+	$(RMF) *.bak
+	$(RMF) *.bcf
+	$(RMF) *.run.xml
 
 # latexindent backup
-	rm -f *.bak[0-9]
+	$(RMF) *.bak[0-9]
