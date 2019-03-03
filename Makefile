@@ -3,7 +3,7 @@ ifneq ($(SystemDrive),)
 	FONT_FAMILY:=1
 	QQQQ=
 	RMF=del /Q
-	PERCENT=%%
+	PERCENT=%
 	LEFTPAREN:=(
 	RIGHTPAREN:=)
 else
