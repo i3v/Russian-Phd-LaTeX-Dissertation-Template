@@ -1,0 +1,45 @@
+
+-dOverrideICC=true  Можно использовать для ...
+
+-d
+
+
+-dHaveTransparency избавляется от прозрацных объектов (которые, говорят, могут быть отрисованы каким-либо неожиданным образом)
+
+	
+- Было бы полезно отписаться тут: https://stackoverflow.com/questions/35389699/embed-icc-color-profile-in-ps2pdf-ghostscript
+- И, возможно, тут: https://stackoverflow.com/a/31593330/1032586
+
+- https://stackoverflow.com/a/8567524/1032586 ColorImageFilter!
+
+- -dCompatibilityLevel=1.4 - без этого некоторые страницы могут растеризоваться
+
+- rendering intent это выбор между "обрезать не влезающие цвета" и "отмасштабировать все цвета так, чтобы влезали", подробнее см. 
+
+
+Первый способ в принципе удовлетворяет двум базовым требованиям: 
+ - формально, требование типографии выполнено - RGB теперь нет, есть только DeviceCMYK (ну и DeviceGray ещё), в чем можно убедиться с помощью Acrobat'а [1](Obj insp) [2](Color manager)
+ - цвета в первых двух столбцах идеально соответствуют друг другу
+ 
+Но есть небольшое отличие от варианта с `xcolor[cmyk]` - цвет обычного чёрного текста задан в палитре DeviceGray (а не DeviceCMYK). Мне кажется, это не должно быть проблемой. Но если буквоедствовать https://stackoverflow.com/a/35646895/1032586
+
+ 
+ 
+ - посмотреть что ещё в текущей версии
+  
+ - попробовать сконвертировать в cmyk через gs -Fastcolor
+ 
+ - https://helpx.adobe.com/acrobat/using/color-conversion-ink-management-acrobat.html
+ ;;;;;;;;;;;;;;;;;;;;
+ 
+ 
+ 
+ dDetectDuplicateImages
+
+try convert text to green
+
+try unzip pdf
+
+best descr of DeviceColor: 
+http://www.verypdf.com/document/pdf-format-reference/pg_0241.htm
+ (apply wayback
