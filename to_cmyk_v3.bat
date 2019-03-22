@@ -9,6 +9,5 @@ gswin64c ^
    -sDEVICE=pdfwrite ^
    -sProcessColorModel=DeviceCMYK ^
    -sColorConversionStrategy=CMYK ^
-   -sColorConversionStrategyForImages=CMYK ^
     -sOutputFile=%1_gscc03.pdf ^
     %1.pdf

@@ -13,7 +13,6 @@ gswin64c ^
    -dHaveTransparency=false ^
    -sProcessColorModel=DeviceCMYK ^
    -sColorConversionStrategy=CMYK ^
-   -sColorConversionStrategyForImages=CMYK ^
    -sDefaultGrayProfile=gray_to_cmyk.icc ^
    -sDefaultCMYKProfile="RSWOP.icm" ^
    -sDefaultRGBProfile="sRGB Color Space Profile.icm" ^
